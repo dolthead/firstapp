@@ -3,6 +3,11 @@
     <ion-title>
       Tab 1
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="loggedIn = !loggedIn">
+        <ion-icon slot="icon-only" [name]="'person' + (loggedIn ? '' : '-outline')"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -13,5 +18,6 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-button expand="block" routerLink="page2">Go to page 2</ion-button>
+
 </ion-content>
