@@ -8,7 +8,7 @@ const routes: Routes = [
     component: Tab2Page,
   },
   {
-    path: 'person-detail/:id',
+    path: 'person-detail/:name',
     loadChildren: () => import('../person-detail/person-detail.module').then( m => m.PersonDetailPageModule)
   },
 ];

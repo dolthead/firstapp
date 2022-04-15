@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title>
-      People
+      Pokemon
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentAbout()">
@@ -13,21 +13,11 @@
 
 <ion-content [fullscreen]="true">
 
-  <ion-searchbar [(ngModel)]="searchText" animated="true"></ion-searchbar>
+  <ion-searchbar (ionChange)="filterItems($event)" debounce="200"></ion-searchbar>
 
-  <ion-list>
-    <ion-item *ngFor="let person of items | async" button 
-    [routerLink]="'person-detail/' + person.id"
-    [hidden]="!find(person)">
-      <ion-avatar slot="start">
-        <img [src]="person.avatar" alt="avatar">
-      </ion-avatar>
-      <ion-label>
-        {{ person.first_name }}
-        {{ person.last_name }},
-        {{ person.address.state }}
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <ion-item lines="full" button *ngFor="let pokemon of filteredList"
+      [routerLink]="'person-detail/' + pokemon.name">
+    <h2>{{ pokemon.name | titlecase }}</h2>
+  </ion-item>
 
 </ion-content>

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Observable } from 'rxjs';
-import { PeopleService } from '../services/people.service';
 import { AboutPage } from '../about/about.page';
+import { DataService } from '../services/data.service';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-tab2',
@@ -12,18 +12,26 @@ import { AboutPage } from '../about/about.page';
 export class Tab2Page implements OnInit {
 
   searchText = '';
-  items: Observable<any>;
+  items: any[] = [];
+  filteredList: any[] = [];
 
-  constructor(private peopleService: PeopleService, private modal: ModalController) {}
+  constructor(private dataService: DataService, private modal: ModalController) {}
 
   ngOnInit() {
-    this.items = this.peopleService.getPeople(20);
+    this.dataService.getSome(1000)
+      .pipe(take(1))
+      .subscribe(pokeData => {
+        this.items = pokeData['results'];
+        this.items.sort((a, b) => a.name > b.name ? 1 : -1);
+        this.filteredList = [...this.items];
+      });
   }
 
-  find(person: any) {
-    return this.searchText.trim() === ''
-      || `${ person.first_name } ${ person.last_name } ${ person.address.state }`.toLowerCase()
-      .includes(this.searchText.toLowerCase());
+  filterItems(evt) {
+    const searchTerm = evt.srcElement.value;
+    this.filteredList = searchTerm.trim()
+      ? this.items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase())) 
+      : [...this.items];
   }
 
   presentAbout() {

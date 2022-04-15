@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { PeopleService } from '../services/people.service';
+import { take } from 'rxjs/operators';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-person-detail',
@@ -9,18 +9,27 @@ import { PeopleService } from '../services/people.service';
   styleUrls: ['./person-detail.page.scss'],
 })
 export class PersonDetailPage {
-  id: number;
-  person: Observable<any>;
+  name: string;
+  pokemon: any;
 
-  constructor(private route: ActivatedRoute, private peopleService: PeopleService) { }
+  avatarButtonStyle = {
+    height: '60vw',
+    width: '60vw',
+    'max-height': '200px',
+    'max-width': '200px',
+    margin: '0 auto',
+    'background-color': 'white',
+    'border-radius': '50%',
+    'box-shadow': '0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3)'
+  };
+
+  constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
   async ionViewWillEnter() {
-    this.id = await this.route.snapshot.params.id;
-    this.person = this.peopleService.getPerson(this.id);
-  }
-
-  getGoogleHref(address) {
-    return `http://maps.google.com/maps?q=${ address.street_address }, ${ address.city }, ${ address.state } ${ address.zip_code }`;
+    this.name = this.route.snapshot.paramMap.get('name');
+    this.dataService.getOne(this.name)
+      .pipe(take(1))
+      .subscribe(pokeData => this.pokemon = pokeData);
   }
 
 }
