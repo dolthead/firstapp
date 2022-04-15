@@ -14,6 +14,7 @@
     <ion-tab-button tab="tab3">
       <ion-icon name="square"></ion-icon>
       <ion-label>Tab 3</ion-label>
+      <ion-badge color="danger" *ngIf="tabCount > 0">{{ tabCount }}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 

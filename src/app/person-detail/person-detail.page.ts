@@ -26,6 +26,7 @@ export class PersonDetailPage {
   constructor(private route: ActivatedRoute, private dataService: DataService) { }
 
   async ionViewWillEnter() {
+    await new Promise(resolve => setTimeout(resolve, 3000));
     this.name = this.route.snapshot.paramMap.get('name');
     this.dataService.getOne(this.name)
       .pipe(take(1))
